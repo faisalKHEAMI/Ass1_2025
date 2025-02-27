@@ -1,0 +1,20 @@
+(a) Efficiency Improvements Over Sequential Execution
+
+Sequential Fibonacci implementation is slow, because it uses basic recursive approach, O(2ⁿ) time complexity. 
+calculating fib(42) sequentially took 14.48 seconds. cause of redundant computations.
+
+Parallel execution (using processes or threads) spreads the workload across multiple cores, which helps—but only to a certain extent. The process-based approach took 32.47 seconds, while the thread-based approach took 32.39 seconds. The reason they weren’t drastically faster is that for a recursive function like Fibonacci, parallelism introduces overhead from process creation and context switching, limiting the actual performance gain. If efficiency was the goal, a memoized or dynamic programming approach would be far superior to brute-force parallelism.
+
+(b) How Ordered Output Is Maintained in Concurrent Processing
+Keeping results in order while running things concurrently isn’t straightforward because different processes or threads finish at different times. To prevent  overlapping: 
+waitpid() ensues that the parent waits for the child processes to end then prints.
+pthread_join() waits for thread to finishes before allowing the program to moves on.
+
+
+(c) Scalability Challenges as Tasks Increase
+Process Overhead Creating too many processes eats up memory and CPU .
+Thread Contention – Too many threads trying to access shared memory slows things down due to locking mechanisms.
+Uneven Load Balancing – Some tasks may finish much earlier than others, leaving resources idle.
+Limited Gains for Recursive Tasks – Fibonacci calculations depend on previous results, so breaking them into independent tasks doesn’t help much. 
+
+While parallelism works well for tasks that can run independently, Fibonacci isn’t a great candidate for it. If the goal was speed, the real fix would be to use dynamic programming or memoization, rather than just throwing more CPU cores at the problem.
